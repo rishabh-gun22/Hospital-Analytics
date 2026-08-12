@@ -30,8 +30,6 @@ spark.conf.set(
    dbutils.secrets.get(scope="hosp-vault-scope", key="storage-connection")
   )
 
-
-
 bronze_path = "abfss://bronze@hospdata.dfs.core.windows.net/patient_flow"
 
 #Write stream to bronze
