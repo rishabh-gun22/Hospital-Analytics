@@ -1,9 +1,9 @@
 from pyspark.sql.functions import *
 
 # Azure Event Hub Configuration
-event_hub_namespace = "hosp-analytics-ns.servicebus.windows.net"
-event_hub_name="rish-hosp-analytics-eh"  
-event_hub_conn_str = dbutils.secrets.get(scope="hosp-vault-scope", key="eventhub-connection")
+event_hub_namespace = "///namespace"
+event_hub_name="///name"  
+event_hub_conn_str = dbutils.secrets.get(scope="///scope", key="///keyname")
   
 kafka_options = {
     'kafka.bootstrap.servers': f"{event_hub_namespace}:9093",
@@ -27,10 +27,10 @@ json_df = raw_df.selectExpr("CAST(value AS STRING) as raw_json")
 #ADLS configuration 
 spark.conf.set(
   "fs.azure.account.key.hospdata.dfs.core.windows.net",
-   dbutils.secrets.get(scope="hosp-vault-scope", key="storage-connection")
+   dbutils.secrets.get(scope="///scope", key="///keyname")
   )
 
-bronze_path = "abfss://bronze@hospdata.dfs.core.windows.net/patient_flow"
+bronze_path = "///path"
 
 #Write stream to bronze
 (
@@ -38,7 +38,7 @@ bronze_path = "abfss://bronze@hospdata.dfs.core.windows.net/patient_flow"
     .writeStream
     .format("delta")
     .outputMode("append")
-    .option("checkpointLocation", "abfss://bronze@hospdata.dfs.core.windows.net/_checkpoints/patient_flow")
+    .option("checkpointLocation", "///checkpoints path")
     .start(bronze_path)
     
     
